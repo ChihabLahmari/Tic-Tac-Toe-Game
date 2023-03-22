@@ -187,7 +187,7 @@ class _GameViewState extends State<GameView> {
     // Check 1st row
     if (displayXO[0] == displayXO[1] && displayXO[0] == displayXO[2] && displayXO[0] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[0]} Wins!";
+        resultDeclaration = "Player ${displayXO[0]} Wins";
         matchIndexes.addAll([0, 1, 2]);
         _updateScore(displayXO[0]);
       });
@@ -196,7 +196,7 @@ class _GameViewState extends State<GameView> {
     // Check 2nd row
     if (displayXO[3] == displayXO[4] && displayXO[3] == displayXO[5] && displayXO[3] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[3]} Wins!";
+        resultDeclaration = "Player ${displayXO[3]} Wins";
         matchIndexes.addAll([3, 4, 5]);
 
         _updateScore(displayXO[3]);
@@ -206,7 +206,7 @@ class _GameViewState extends State<GameView> {
     // Check 3rd row
     if (displayXO[6] == displayXO[7] && displayXO[6] == displayXO[8] && displayXO[6] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[6]} Wins!";
+        resultDeclaration = "Player ${displayXO[6]} Wins";
         matchIndexes.addAll([6, 7, 8]);
 
         _updateScore(displayXO[6]);
@@ -216,7 +216,7 @@ class _GameViewState extends State<GameView> {
     // Check 1st column
     if (displayXO[0] == displayXO[3] && displayXO[0] == displayXO[6] && displayXO[0] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[0]} Wins!";
+        resultDeclaration = "Player ${displayXO[0]} Wins";
         matchIndexes.addAll([0, 3, 6]);
 
         _updateScore(displayXO[0]);
@@ -226,7 +226,7 @@ class _GameViewState extends State<GameView> {
     // Check 2nd column
     if (displayXO[1] == displayXO[4] && displayXO[1] == displayXO[7] && displayXO[1] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[1]} Wins!";
+        resultDeclaration = "Player ${displayXO[1]} Wins";
         matchIndexes.addAll([1, 4, 7]);
 
         _updateScore(displayXO[1]);
@@ -236,7 +236,7 @@ class _GameViewState extends State<GameView> {
     // Check 3rd column
     if (displayXO[2] == displayXO[5] && displayXO[2] == displayXO[8] && displayXO[2] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[2]} Wins!";
+        resultDeclaration = "Player ${displayXO[2]} Wins";
         matchIndexes.addAll([2, 5, 8]);
 
         _updateScore(displayXO[2]);
@@ -246,7 +246,7 @@ class _GameViewState extends State<GameView> {
     // Check 1st diagonal
     if (displayXO[0] == displayXO[4] && displayXO[0] == displayXO[8] && displayXO[0] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[0]} Wins!";
+        resultDeclaration = "Player ${displayXO[0]} Wins";
         matchIndexes.addAll([0, 4, 8]);
 
         _updateScore(displayXO[0]);
@@ -256,7 +256,7 @@ class _GameViewState extends State<GameView> {
     // Check 2nd diagonal
     if (displayXO[2] == displayXO[4] && displayXO[2] == displayXO[6] && displayXO[2] != '') {
       setState(() {
-        resultDeclaration = "Player ${displayXO[2]} Wins!";
+        resultDeclaration = "Player ${displayXO[2]} Wins";
         matchIndexes.addAll([2, 4, 6]);
 
         _updateScore(displayXO[2]);
@@ -264,7 +264,7 @@ class _GameViewState extends State<GameView> {
     }
     if (filledBoxes == 9 && !winnerFound) {
       setState(() {
-        resultDeclaration = 'Nobody Wins!';
+        resultDeclaration = 'Nobody Wins';
         stopTimer();
       });
     }
