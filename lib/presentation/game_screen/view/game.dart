@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'dart:async';
+import 'dart:math';
 
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:xo_game/presentation/resources/app_size.dart';
 import 'package:xo_game/presentation/resources/app_strings.dart';
@@ -25,6 +25,14 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(duration: const Duration(milliseconds: 800));
+  }
+
   bool xTurn = true;
   List<String> displayXO = ['', '', '', '', '', '', '', '', ''];
   List<int> matchIndexes = [];
@@ -63,105 +71,154 @@ class _GameViewState extends State<GameView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              ColorManager.lightPurple,
-              ColorManager.darkPurple,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSize.s15, vertical: AppSize.s60),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(
-                height: kBottomNavigationBarHeight,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  scoreContainer(IconsAssets.xIcon, xScore, widget.playerName1),
-                  scoreContainer(IconsAssets.oIcon, oScore, widget.playerName2),
-                ],
-              ),
-              const SizedBox(height: AppSize.s20),
-              Expanded(
-                child: GridView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  // scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(0),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    // crossAxisSpacing: 10,
-                    // mainAxisSpacing: 10,
-                    // childAspectRatio: 1,
-                  ),
-                  itemCount: 9,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        _tapped(index);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          // width: double.infinity,
-                          // height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: matchIndexes.contains(index)
-                                ? ColorManager.white
-                                : ColorManager.darkPurple,
-                            borderRadius: BorderRadius.circular(AppSize.s20),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(AppSize.s25),
-                            child: displayXO[index] == AppStrings.x
-                                ? Image.asset(IconsAssets.xIcon)
-                                : displayXO[index] == AppStrings.o
-                                    ? Image.asset(IconsAssets.oIcon)
-                                    : const SizedBox(),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            body: Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    ColorManager.lightPurple,
+                    ColorManager.darkPurple,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
-              const SizedBox(height: AppSize.s20),
-              resultDeclaration.isNotEmpty
-                  ? Column(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSize.s15, vertical: AppSize.s50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const SizedBox(
+                      height: kBottomNavigationBarHeight,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          resultDeclaration,
-                          style: const TextStyle(
-                            color: ColorManager.white,
-                            fontSize: AppSize.s30,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        const SizedBox(height: 50),
+                        scoreContainer(IconsAssets.xIcon, xScore, widget.playerName1),
+                        scoreContainer(IconsAssets.oIcon, oScore, widget.playerName2),
                       ],
-                    )
-                  : const SizedBox(),
-              _buildTimer(),
-            ],
+                    ),
+                    const SizedBox(height: AppSize.s20),
+                    resultDeclaration.isNotEmpty
+                        ? Column(
+                            children: [
+                              Text(
+                                resultDeclaration,
+                                style: const TextStyle(
+                                  color: ColorManager.white,
+                                  fontSize: AppSize.s30,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: (timer == null ? false : timer!.isActive)
+                          ? Center(
+                              child: xTurn
+                                  ? const Text(
+                                      "Player X Turn",
+                                      style: TextStyle(
+                                        color: ColorManager.white,
+                                        fontSize: AppSize.s30,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Player O Turn",
+                                      style: TextStyle(
+                                        color: ColorManager.white,
+                                        fontSize: AppSize.s30,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                            )
+                          : const SizedBox(),
+                    ),
+                    const SizedBox(height: AppSize.s20),
+                    Expanded(
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        // scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(0),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          // crossAxisSpacing: 10,
+                          // mainAxisSpacing: 10,
+                          // childAspectRatio: 1,
+                        ),
+                        itemCount: 9,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              _tapped(index);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                // width: double.infinity,
+                                // height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: matchIndexes.contains(index)
+                                      ? ColorManager.white
+                                      : ColorManager.darkPurple,
+                                  borderRadius: BorderRadius.circular(AppSize.s20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(AppSize.s25),
+                                  child: displayXO[index] == AppStrings.x
+                                      ? Image.asset(IconsAssets.xIcon)
+                                      : displayXO[index] == AppStrings.o
+                                          ? Image.asset(IconsAssets.oIcon)
+                                          : const SizedBox(),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: AppSize.s20),
+                    _buildTimer(),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+        Align(
+          alignment: Alignment.center,
+          child: ConfettiWidget(
+            confettiController: _confettiController,
+            colors: const [
+              ColorManager.darkPurple,
+              ColorManager.lightPurple,
+              ColorManager.yellow,
+              ColorManager.purple,
+              ColorManager.white,
+            ],
+            blastDirection: -pi / 2,
+            emissionFrequency: 0.1,
+            numberOfParticles: 25,
+            blastDirectionality: BlastDirectionality.explosive,
+          ),
+        )
+      ],
     );
   }
 
@@ -190,6 +247,7 @@ class _GameViewState extends State<GameView> {
         resultDeclaration = "Player ${displayXO[0]} Wins";
         matchIndexes.addAll([0, 1, 2]);
         _updateScore(displayXO[0]);
+        startConfetti();
       });
     }
 
@@ -200,6 +258,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([3, 4, 5]);
 
         _updateScore(displayXO[3]);
+        startConfetti();
       });
     }
 
@@ -210,6 +269,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([6, 7, 8]);
 
         _updateScore(displayXO[6]);
+        startConfetti();
       });
     }
 
@@ -220,6 +280,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([0, 3, 6]);
 
         _updateScore(displayXO[0]);
+        startConfetti();
       });
     }
 
@@ -230,6 +291,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([1, 4, 7]);
 
         _updateScore(displayXO[1]);
+        startConfetti();
       });
     }
 
@@ -240,6 +302,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([2, 5, 8]);
 
         _updateScore(displayXO[2]);
+        startConfetti();
       });
     }
 
@@ -250,6 +313,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([0, 4, 8]);
 
         _updateScore(displayXO[0]);
+        startConfetti();
       });
     }
 
@@ -260,6 +324,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([2, 4, 6]);
 
         _updateScore(displayXO[2]);
+        startConfetti();
       });
     }
     if (filledBoxes == 9 && !winnerFound) {
@@ -297,8 +362,8 @@ class _GameViewState extends State<GameView> {
 
     return isRunning
         ? SizedBox(
-            width: 100,
-            height: 100,
+            width: 80,
+            height: 80,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -314,7 +379,7 @@ class _GameViewState extends State<GameView> {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: AppSize.s50,
+                      fontSize: AppSize.s40,
                     ),
                   ),
                 ),
@@ -401,5 +466,9 @@ class _GameViewState extends State<GameView> {
         ),
       ),
     );
+  }
+
+  void startConfetti() {
+    _confettiController.play();
   }
 }

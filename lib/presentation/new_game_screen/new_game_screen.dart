@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:xo_game/presentation/enter_players_name_screen/enter_players_name_screen.dart';
 import 'package:xo_game/presentation/resources/app_size.dart';
 import 'package:xo_game/presentation/resources/app_strings.dart';

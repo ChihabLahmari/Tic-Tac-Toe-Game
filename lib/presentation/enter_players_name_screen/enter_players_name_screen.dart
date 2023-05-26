@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:xo_game/presentation/game_screen/view/game.dart';
 import 'package:xo_game/presentation/resources/assets_manager.dart';
 
@@ -35,57 +33,61 @@ class EnterPlayersNameScreen extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSize.s15, vertical: AppSize.s60),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                AppStrings.enterPlayersName,
-                style: TextStyle(
-                  fontSize: AppSize.s30,
-                  fontWeight: FontWeight.w700,
-                  color: ColorManager.yellow,
-                ),
-              ),
-              const SizedBox(height: AppSize.s60),
-              addPlayerName(player1NameController, IconsAssets.xIcon, 1),
-              addPlayerName(player2NameController, IconsAssets.oIcon, 2),
-              Container(
-                height: AppSize.s60,
-                width: AppSize.s250,
-                decoration: BoxDecoration(
-                  color: ColorManager.yellow,
-                  borderRadius: BorderRadius.circular(AppSize.s50),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GameView(
-                            playerName1: player1NameController.text.isNotEmpty
-                                ? player1NameController.text
-                                : "Player 1",
-                            playerName2: player2NameController.text.isNotEmpty
-                                ? player2NameController.text
-                                : "Player 1",
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSize.s15, vertical: AppSize.s60),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    AppStrings.enterPlayersName,
+                    style: TextStyle(
+                      fontSize: AppSize.s30,
+                      fontWeight: FontWeight.w700,
+                      color: ColorManager.yellow,
+                    ),
+                  ),
+                  const SizedBox(height: AppSize.s60),
+                  addPlayerName(player1NameController, IconsAssets.xIcon, 1),
+                  addPlayerName(player2NameController, IconsAssets.oIcon, 2),
+                  Container(
+                    height: AppSize.s60,
+                    width: AppSize.s250,
+                    decoration: BoxDecoration(
+                      color: ColorManager.yellow,
+                      borderRadius: BorderRadius.circular(AppSize.s50),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GameView(
+                                playerName1: player1NameController.text.isNotEmpty
+                                    ? player1NameController.text
+                                    : "Player 1",
+                                playerName2: player2NameController.text.isNotEmpty
+                                    ? player2NameController.text
+                                    : "Player 1",
+                              ),
+                            ));
+                      },
+                      child: const Center(
+                        child: Text(
+                          AppStrings.newGame,
+                          style: TextStyle(
+                            color: ColorManager.darkPurple,
+                            fontSize: AppSize.s30,
+                            fontWeight: FontWeight.w900,
                           ),
-                        ));
-                  },
-                  child: const Center(
-                    child: Text(
-                      AppStrings.newGame,
-                      style: TextStyle(
-                        color: ColorManager.darkPurple,
-                        fontSize: AppSize.s30,
-                        fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -109,7 +111,7 @@ class EnterPlayersNameScreen extends StatelessWidget {
             ),
             Text(
               playerId == 1 ? AppStrings.player1 : AppStrings.player2,
-              style: TextStyle(
+              style: const TextStyle(
                 color: ColorManager.white,
                 fontSize: AppSize.s25,
                 fontWeight: FontWeight.bold,
@@ -123,7 +125,7 @@ class EnterPlayersNameScreen extends StatelessWidget {
           width: AppSize.s200,
           child: TextField(
             controller: player1NameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               filled: true,
               fillColor: ColorManager.white,
               border: InputBorder.none,
