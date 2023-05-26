@@ -131,7 +131,7 @@ class _GameViewState extends State<GameView> {
                           ? Center(
                               child: xTurn
                                   ? const Text(
-                                      "Player X Turn",
+                                      AppStrings.playerXturn,
                                       style: TextStyle(
                                         color: ColorManager.white,
                                         fontSize: AppSize.s30,
@@ -139,7 +139,7 @@ class _GameViewState extends State<GameView> {
                                       ),
                                     )
                                   : const Text(
-                                      "Player O Turn",
+                                      AppStrings.playerOturn,
                                       style: TextStyle(
                                         color: ColorManager.white,
                                         fontSize: AppSize.s30,

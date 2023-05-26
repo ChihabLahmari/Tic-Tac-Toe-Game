@@ -8,6 +8,9 @@ class AppStrings {
   static const String enterPlayersName = "Enter Player Name";
   static const String player1 = "Player 1";
   static const String player2 = "Player 2";
+  static const String name = "Name";
+  static const String playerXturn = "Player X Turn";
+  static const String playerOturn = "Player X Turn";
   static const String x = "x";
   static const String o = "o";
 }

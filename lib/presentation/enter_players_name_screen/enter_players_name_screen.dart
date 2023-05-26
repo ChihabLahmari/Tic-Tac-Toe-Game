@@ -129,7 +129,7 @@ class EnterPlayersNameScreen extends StatelessWidget {
               filled: true,
               fillColor: ColorManager.white,
               border: InputBorder.none,
-              hintText: "Name",
+              hintText: AppStrings.name,
             ),
           ),
         )
