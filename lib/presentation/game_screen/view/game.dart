@@ -25,16 +25,11 @@ class GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<GameView> {
-  late ConfettiController _confettiController;
+  final ConfettiController _confettiController = ConfettiController(duration: const Duration(milliseconds: 800));
 
-  @override
-  void initState() {
-    super.initState();
-    _confettiController = ConfettiController(duration: const Duration(milliseconds: 800));
-  }
-
-  bool xTurn = true;
+  bool xTurn = Random().nextBool();
   List<String> displayXO = ['', '', '', '', '', '', '', '', ''];
+  // This list contains the index of the container that won to change its color.
   List<int> matchIndexes = [];
   bool firstGame = true;
 
@@ -105,8 +100,8 @@ class _GameViewState extends State<GameView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        scoreContainer(IconsAssets.xIcon, xScore, widget.playerName1),
-                        scoreContainer(IconsAssets.oIcon, oScore, widget.playerName2),
+                        _scoreContainer(IconsAssets.xIcon, xScore, widget.playerName1),
+                        _scoreContainer(IconsAssets.oIcon, oScore, widget.playerName2),
                       ],
                     ),
                     const SizedBox(height: AppSize.s20),
@@ -174,9 +169,7 @@ class _GameViewState extends State<GameView> {
                                 // width: double.infinity,
                                 // height: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: matchIndexes.contains(index)
-                                      ? ColorManager.white
-                                      : ColorManager.darkPurple,
+                                  color: matchIndexes.contains(index) ? ColorManager.white : ColorManager.darkPurple,
                                   borderRadius: BorderRadius.circular(AppSize.s20),
                                 ),
                                 child: Padding(
@@ -247,7 +240,7 @@ class _GameViewState extends State<GameView> {
         resultDeclaration = "Player ${displayXO[0].toUpperCase()} Wins";
         matchIndexes.addAll([0, 1, 2]);
         _updateScore(displayXO[0]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -258,7 +251,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([3, 4, 5]);
 
         _updateScore(displayXO[3]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -269,7 +262,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([6, 7, 8]);
 
         _updateScore(displayXO[6]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -280,7 +273,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([0, 3, 6]);
 
         _updateScore(displayXO[0]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -291,7 +284,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([1, 4, 7]);
 
         _updateScore(displayXO[1]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -302,7 +295,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([2, 5, 8]);
 
         _updateScore(displayXO[2]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -313,7 +306,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([0, 4, 8]);
 
         _updateScore(displayXO[0]);
-        startConfetti();
+        _startConfetti();
       });
     }
 
@@ -324,7 +317,7 @@ class _GameViewState extends State<GameView> {
         matchIndexes.addAll([2, 4, 6]);
 
         _updateScore(displayXO[2]);
-        startConfetti();
+        _startConfetti();
       });
     }
     if (filledBoxes == 9 && !winnerFound) {
@@ -388,10 +381,10 @@ class _GameViewState extends State<GameView> {
               ],
             ),
           )
-        : startGameButtom();
+        : _startGameButtom();
   }
 
-  Widget startGameButtom() {
+  Widget _startGameButtom() {
     return InkWell(
       onTap: () {
         startTimer();
@@ -420,7 +413,7 @@ class _GameViewState extends State<GameView> {
     );
   }
 
-  Widget scoreContainer(String image, int score, String name) {
+  Widget _scoreContainer(String image, int score, String name) {
     return Container(
       height: AppSize.s150,
       width: AppSize.s170,
@@ -469,7 +462,7 @@ class _GameViewState extends State<GameView> {
     );
   }
 
-  void startConfetti() {
+  void _startConfetti() {
     _confettiController.play();
   }
 }
